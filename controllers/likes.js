@@ -1,9 +1,34 @@
 const { response } = require('express');
-const { db } = require('../models/User');
-const User = require('../models/User');
-const bcrypt = require('bcryptjs');
-const { generarJWT } = require('../helpers/jwt');
+const { db } = require('../models/Photo');
+const Photo = require('../models/Photo');
 
+const newLike = async (req, res = response) =>{
+    console.log("Registrando like");
+    const { publishDate, type, likeDate } = req.body;
+    const publishDateAndType = publishDate + "-" + type;
+    req.body.publishDateAndType = publishDateAndType;
+
+    const dbUser = new User( req.body );    
+    await dbUser.save();
+
+    console.log("Fin like");
+
+    // Generar respuesta exitosa
+    return res.status(201).json({
+        ok: true,
+        uid: dbUser.id,
+        email,
+        token
+    })
+
+}
+
+
+module.exports = {
+    newLike
+};
+
+/*
 const loginUser = async (req, res = response) =>{    
     console.log("Inicio");
     const { email, password } = req.body;
@@ -101,10 +126,5 @@ const renewToken = async (req, res = response) =>{
         email,
         token      
     });
-}
+}*/
 
-module.exports = {
-    loginUser,
-    newUser,
-    renewToken
-};
