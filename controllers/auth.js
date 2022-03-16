@@ -13,7 +13,7 @@ const loginUser = async (req, res = response) =>{
         const user = await User.findOne({email});
         // ¿Existe el usuario?
         if( !user ){
-            return res.status(400).json({
+            return res.status(200).json({
                 ok:false,
                 msg:'credenciales no válidas'
             });
@@ -21,18 +21,18 @@ const loginUser = async (req, res = response) =>{
         // confirmar match del password
         const validPassword = bcrypt.compareSync( password, user.password );
         if (!validPassword){
-            return res.status(400).json({
+            return res.status(200).json({
                 ok:false,
                 msg:'credenciales no válidas'
             });
         }
         // Generar JWT
-        const token = await generarJWT(user.id, user.name );
+        const token = await generarJWT(user.id, user.email );
         // Respuesta del servicio
         return res.json({
             ok: true,
             uid: user.id,
-            name: user.name,
+            email: user.name,
             token
         });
 
@@ -47,13 +47,13 @@ const loginUser = async (req, res = response) =>{
 }
 
 const newUser = async (req, res = response) =>{   
-    const { email, name, password } = req.body;
+    const { email, password } = req.body;
     try {
         // verificar el email
         const user = await User.findOne({ email });
 
         if( user ) {
-            return res.status(400).json({
+            return res.status(200).json({
                 ok: false,
                 msg: 'El usuario ya existe con ese email'
             });
@@ -61,12 +61,11 @@ const newUser = async (req, res = response) =>{
 
         // Crear usuario con el modelo
         const dbUser = new User( req.body );
-
         // Hashear password
         const salt = bcrypt.genSaltSync();
         dbUser.password = bcrypt.hashSync( password, salt );
         // Generar JWT
-        const token = await generarJWT( dbUser.id, name );
+        const token = await generarJWT( dbUser.id, dbUser.email );
         // Crear usuario en BD
         await dbUser.save();
 
@@ -74,7 +73,7 @@ const newUser = async (req, res = response) =>{
         return res.status(201).json({
             ok: true,
             uid: dbUser.id,
-            name,
+            email,
             token
         })
 
@@ -88,15 +87,15 @@ const newUser = async (req, res = response) =>{
 
 const renewToken = async (req, res = response) =>{     
     
-    const { uid, name } = req;
+    const { uid, email } = req;    
 
     // Generar JWT
-    const token = await generarJWT( uid, name );
+    const token = await generarJWT( uid, email );
 
     return res.json({
         ok: true,
         uid: uid,
-        name: name,
+        email,
         token      
     });
 }
