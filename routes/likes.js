@@ -1,18 +1,25 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { newLike } = require('../controllers/likes')
+const { newLike, removeLike, likeList, hasLike } = require('../controllers/likes')
 const { validateFields } = require('../middlewares/validate-fields');
 
 
 const router = Router(); 
 
 // Nuevo Like
+/*
 router.post('/new',[
     check('publishDate', 'publishDate error').isAlphanumeric,
     check('type', 'type error').isAlphanumeric,
     check('likeDate', 'likeDate error').isAlphanumeric,
+    check('email', 'email error').isEmail,
     validateFields        
-], newLike);
+], newLike);*/
+router.post('/new', newLike);
+router.post('/remove', removeLike);
+router.post('/list', likeList);
+router.post('/haslike', hasLike);
+
 
 
 /*
