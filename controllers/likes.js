@@ -53,6 +53,8 @@ const removeLike = async (req, res = response) => {
 
 const hasLike = async (req, res = response) => {
     const { publishDate, type, email } = req.body;
+    console.log("HASLIKE", publishDate, type, email);
+    
     const publishDateAndTypeAndEmail = publishDate + "-" + type +"-"+ email;
     const resp = await Like.findOne({ publishDateAndTypeAndEmail });
 
@@ -67,9 +69,28 @@ const hasLike = async (req, res = response) => {
             msg: "Image hasn't like"
         })
     }
+    
 }
 
 const likeList = async (req, res = response) => {
+    const { email } = req.body;
+    console.log("LIKE LIST", email);
+
+    const resp = await Like.find( {email} )
+    console.log(resp.length);
+
+    if( resp.length > 0 ){
+        return res.status(200).json({
+            ok: true,
+            data: resp
+        });        
+    } else {
+
+        return res.status(200).json({
+            ok: false,
+            msg: "No data"
+        })
+    }
 }
 
 

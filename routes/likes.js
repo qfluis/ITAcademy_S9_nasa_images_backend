@@ -7,18 +7,35 @@ const { validateFields } = require('../middlewares/validate-fields');
 const router = Router(); 
 
 // Nuevo Like
-/*
+
 router.post('/new',[
-    check('publishDate', 'publishDate error').isAlphanumeric,
-    check('type', 'type error').isAlphanumeric,
-    check('likeDate', 'likeDate error').isAlphanumeric,
-    check('email', 'email error').isEmail,
+    check('publishDate', 'publishDate error').isLength({ min:1 }),
+    check('type', 'type error').isLength({ min:1 }),    
+    check('email', 'email error').isEmail(),
     validateFields        
-], newLike);*/
-router.post('/new', newLike);
-router.post('/remove', removeLike);
-router.post('/list', likeList);
-router.post('/haslike', hasLike);
+], newLike);
+
+router.post('/remove',[
+    check('publishDate', 'publishDate error').isLength({ min:1 }),
+    check('type', 'type error').isLength({ min:1 }),    
+    check('email', 'email error').isEmail(),
+    validateFields
+], removeLike);
+
+router.post('/haslike',[
+    check('publishDate', 'publishDate error').isLength({ min:1 }),
+    check('type', 'type error').isLength({ min:1 }),    
+    check('email', 'email error').isEmail(),
+    validateFields
+], hasLike);
+
+router.post('/list', [
+    check('email', 'email error').isEmail(),
+    validateFields
+], likeList);
+
+//router.post('/list', likeList);
+
 
 
 
