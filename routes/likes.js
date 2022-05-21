@@ -5,7 +5,7 @@ const { validateFields } = require('../middlewares/validate-fields');
 
 
 const router = Router(); 
-
+// TODO: validar JWT ¿?
 // Nuevo Like
 
 router.post('/new',[
@@ -34,28 +34,7 @@ router.post('/list', [
     validateFields
 ], likeList);
 
-//router.post('/list', likeList);
 
 
-
-
-/*
-// Login usuario
-router.post('/',[
-    check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'La contraseña es obligatoria').isLength({ min: 6 }),
-    validateFields        
-], loginUser);
-
-// Nuevo usuario
-router.post('/new',[
-    check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'La contraseña es obligatoria').isLength({ min: 6 }),
-    validateFields
-], newUser );
-
-// Validar & revalidar token
-router.get('/renew', validarJWT, renewToken);
-*/
 
 module.exports = router;
