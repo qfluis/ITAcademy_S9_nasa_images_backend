@@ -17,7 +17,6 @@ router.post('/',[
 router.post('/new',[
     check('email', 'El email es obligatorio').isEmail(),
     check('password', 'La contraseña es obligatoria').isLength({ min: 6 }),
-    check('name', 'Debes introducir un nombre').notEmpty(),
     validateFields
 ], newUser );
 

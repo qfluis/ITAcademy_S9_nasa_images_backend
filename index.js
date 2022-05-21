@@ -21,6 +21,7 @@ app.use(express.json());
 
 // Rutas
 app.use( '/api/auth', require('./routes/auth') );
+app.use( '/api/like', require('./routes/likes') );
 
 // Poner en marcha servidor
 app.listen( process.env.PORT, ()=>{
